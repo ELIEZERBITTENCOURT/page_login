@@ -1,23 +1,34 @@
-// Armazenamento de usuários (simulando banco de dados)
-let users = {
-    'admin': { password: 'admin123', name: 'Administrador', email: 'admin@exemplo.com' },
-    'usuario': { password: '123456', name: 'Usuário Teste', email: 'usuario@exemplo.com' }
-};
+// Função para obter usuários do localStorage
+function getUsers() {
+    const usersData = localStorage.getItem('users');
+    if (!usersData) {
+        // Criar usuários padrão
+        const defaultUsers = {
+            'admin': { password: 'admin123', name: 'Administrador', email: 'admin@exemplo.com' },
+            'usuario': { password: '123456', name: 'Usuário Teste', email: 'usuario@exemplo.com' }
+        };
+        localStorage.setItem('users', JSON.stringify(defaultUsers));
+        return defaultUsers;
+    }
+    return JSON.parse(usersData);
+}
+
+// Função para salvar usuários no localStorage
+function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+let users = getUsers();
 
 // Elementos do DOM
 const loginSection = document.getElementById('loginSection');
 const registerSection = document.getElementById('registerSection');
-const dashboardSection = document.getElementById('dashboardSection');
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
-const logoutBtn = document.getElementById('logoutBtn');
 const showRegisterLink = document.getElementById('showRegister');
 const showLoginLink = document.getElementById('showLogin');
 
-// Variável para armazenar usuário logado
-let currentUser = null;
-
-// Função para mostrar erro
+// Função para mostrar mensagem
 function showMessage(elementId, message, isError = true) {
     const element = document.getElementById(elementId);
     element.textContent = message;
@@ -29,7 +40,7 @@ function showMessage(elementId, message, isError = true) {
     }, 4000);
 }
 
-// Função para alternar entre login e cadastro
+// Alternar entre login e cadastro
 showRegisterLink.addEventListener('click', function () {
     loginSection.classList.add('hidden');
     registerSection.classList.remove('hidden');
@@ -61,7 +72,7 @@ registerPassword.addEventListener('input', function () {
     }
 });
 
-// Função para validar cadastro
+// Validar cadastro
 function validateRegistration(username, email, password, confirmPassword, name) {
     if (name.trim().length < 3) {
         showMessage('registerErrorMessage', 'Nome deve ter pelo menos 3 caracteres');
@@ -102,7 +113,7 @@ function validateRegistration(username, email, password, confirmPassword, name) 
     return true;
 }
 
-// Função para registrar novo usuário
+// Registrar novo usuário
 registerForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -119,6 +130,8 @@ registerForm.addEventListener('submit', function (e) {
             email: email
         };
 
+        saveUsers(users);
+
         showMessage('registerSuccessMessage', 'Cadastro realizado com sucesso! Redirecionando...', false);
 
         setTimeout(() => {
@@ -130,74 +143,47 @@ registerForm.addEventListener('submit', function (e) {
     }
 });
 
-// Função para fazer login
-function login(username, password) {
-    const user = users[username];
-
-    if (!user) {
-        showMessage('loginErrorMessage', 'Usuário não encontrado!');
-        return false;
-    }
-
-    if (user.password !== password) {
-        showMessage('loginErrorMessage', 'Senha incorreta!');
-        return false;
-    }
-
-    currentUser = {
-        username: username,
-        name: user.name,
-        email: user.email
-    };
-
-    const rememberMe = document.getElementById('rememberMe');
-    if (rememberMe.checked) {
-        sessionStorage.setItem('rememberedUser', username);
-    }
-
-    return true;
-}
-
-// Função para mostrar dashboard
-function showDashboard() {
-    loginSection.classList.add('hidden');
-    registerSection.classList.add('hidden');
-    dashboardSection.classList.remove('hidden');
-
-    document.getElementById('userName').textContent = currentUser.name;
-    document.getElementById('userEmail').textContent = currentUser.email;
-
-    const initial = currentUser.name.charAt(0).toUpperCase();
-    document.getElementById('userAvatar').textContent = initial;
-}
-
-// Função para fazer logout
-function logout() {
-    currentUser = null;
-    sessionStorage.removeItem('rememberedUser');
-    dashboardSection.classList.add('hidden');
-    loginSection.classList.remove('hidden');
-    loginForm.reset();
-}
-
-// Event listener para o formulário de login
+// Fazer login
 loginForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const username = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
+    const rememberMe = document.getElementById('rememberMe').checked;
 
-    if (login(username, password)) {
-        showDashboard();
+    const user = users[username];
+
+    if (!user) {
+        showMessage('loginErrorMessage', 'Usuário não encontrado!');
+        return;
     }
+
+    if (user.password !== password) {
+        showMessage('loginErrorMessage', 'Senha incorreta!');
+        return;
+    }
+
+    // Salvar sessão do usuário
+    const sessionData = {
+        username: username,
+        name: user.name,
+        email: user.email,
+        loginTime: new Date().getTime()
+    };
+
+    sessionStorage.setItem('currentUser', JSON.stringify(sessionData));
+
+    if (rememberMe) {
+        localStorage.setItem('rememberedUser', username);
+    }
+
+    // Redirecionar para dashboard
+    window.location.href = 'dashboard.html';
 });
 
-// Event listener para o botão de logout
-logoutBtn.addEventListener('click', logout);
-
-// Verificar se há usuário lembrado ao carregar a página
+// Verificar usuário lembrado
 window.addEventListener('load', function () {
-    const rememberedUser = sessionStorage.getItem('rememberedUser');
+    const rememberedUser = localStorage.getItem('rememberedUser');
     if (rememberedUser && users[rememberedUser]) {
         document.getElementById('loginUsername').value = rememberedUser;
         document.getElementById('rememberMe').checked = true;
