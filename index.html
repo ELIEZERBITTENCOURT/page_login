@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Seção de Login -->
+        <div id="loginSection" class="login-section">
+            <h1>Bem-vindo!</h1>
+            <p class="subtitle">Faça login para continuar</p>
+
+            <div id="loginErrorMessage" class="message error-message"></div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="loginUsername">Usuário</label>
+                    <input type="text" id="loginUsername" placeholder="Digite seu usuário" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" placeholder="Digite sua senha" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Lembrar-me</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+
+            <div class="toggle-link" id="showRegister">
+                Primeira vez aqui? <strong>Criar uma conta</strong>
+            </div>
+        </div>
+
+        <!-- Seção de Cadastro -->
+        <div id="registerSection" class="register-section hidden">
+            <h1>Criar Conta</h1>
+            <p class="subtitle">Preencha os dados para se cadastrar</p>
+
+            <div id="registerErrorMessage" class="message error-message"></div>
+            <div id="registerSuccessMessage" class="message success-message"></div>
+
+            <form id="registerForm">
+                <div class="input-group">
+                    <label for="registerName">Nome Completo</label>
+                    <input type="text" id="registerName" placeholder="Digite seu nome completo" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="registerEmail">E-mail</label>
+                    <input type="email" id="registerEmail" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="registerUsername">Usuário</label>
+                    <input type="text" id="registerUsername" placeholder="Escolha um nome de usuário" required
+                        minlength="3">
+                </div>
+
+                <div class="input-group">
+                    <label for="registerPassword">Senha</label>
+                    <input type="password" id="registerPassword" placeholder="Crie uma senha forte" required
+                        minlength="6">
+                    <div class="password-requirements">
+                        <span class="requirement" id="reqLength">• Mínimo 6 caracteres</span>
+                        <span class="requirement" id="reqNumber">• Pelo menos 1 número</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="registerPasswordConfirm">Confirmar Senha</label>
+                    <input type="password" id="registerPasswordConfirm" placeholder="Digite a senha novamente" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+
+            <div class="toggle-link" id="showLogin">
+                Já tem uma conta? <strong>Fazer login</strong>
+            </div>
+        </div>
+
+        <!-- Seção do Dashboard (após login) -->
+        <div id="dashboardSection" class="dashboard-section hidden">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar"></div>
+                <div class="user-name" id="userName"></div>
+                <div class="user-email" id="userEmail"></div>
+            </div>
+
+            <h1>Dashboard</h1>
+            <p class="subtitle">Você está logado com sucesso!</p>
+
+            <button id="logoutBtn" class="btn btn-secondary">Sair</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
