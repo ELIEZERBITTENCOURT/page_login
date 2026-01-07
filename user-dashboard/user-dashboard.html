@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="user-dashboard.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">📊 Meu Dashboard</div>
+        <div class="navbar-user">
+            <div class="user-avatar-small" id="navUserAvatar">U</div>
+            <span id="navUserName">Usuário</span>
+            <button class="btn-logout" id="logoutBtn">Sair</button>
+        </div>
+    </nav>
+
+    <!-- Container Principal -->
+    <div class="container">
+        <!-- Card de Boas-vindas -->
+        <div class="welcome-card">
+            <div class="user-avatar-large" id="userAvatar">U</div>
+            <h1>Bem-vindo, <span id="userName">Usuário</span>!</h1>
+            <p class="subtitle">Este é o seu painel pessoal</p>
+            <div class="user-info">
+                <p><strong>Email:</strong> <span id="userEmail">usuario@exemplo.com</span></p>
+                <p><strong>Último acesso:</strong> <span id="lastAccess">Agora</span></p>
+            </div>
+        </div>
+
+        <!-- Cards de Informações -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <h3>Atividades</h3>
+                <p>Visualize e gerencie suas atividades recentes no sistema</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📁</div>
+                <h3>Meus Arquivos</h3>
+                <p>Acesse seus documentos e arquivos pessoais</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⚙️</div>
+                <h3>Configurações</h3>
+                <p>Personalize suas preferências e configurações de conta</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <h3>Relatórios</h3>
+                <p>Visualize relatórios e estatísticas personalizadas</p>
+            </div>
+        </div>
+    </div>
+    <script src="user-dashboard.js"></script>
+</body>
+
+</html>
