@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativo</title>
+    <link rel="stylesheet" href="admin-dashboard.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">🛡️ Admin Dashboard</div>
+        <div class="navbar-user">
+            <div class="user-avatar-small" id="navUserAvatar">A</div>
+            <span id="navUserName">Admin</span>
+            <button class="btn-logout" id="logoutBtn">Sair</button>
+        </div>
+    </nav>
+
+    <!-- Container Principal -->
+    <div class="container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>Bem-vindo, <span id="userName">Administrador</span>!</h1>
+            <p>Painel de controle e gerenciamento do sistema</p>
+        </div>
+
+        <!-- Cards de Estatísticas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">👥</div>
+                <div class="stat-value" id="totalUsers">0</div>
+                <div class="stat-label">Total de Usuários</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green">✅</div>
+                <div class="stat-value" id="activeUsers">0</div>
+                <div class="stat-label">Usuários Ativos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange">📊</div>
+                <div class="stat-value" id="newUsersToday">0</div>
+                <div class="stat-label">Novos Hoje</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple">🔐</div>
+                <div class="stat-value" id="adminUsers">0</div>
+                <div class="stat-label">Administradores</div>
+            </div>
+        </div>
+
+        <!-- Grid de Conteúdo -->
+        <div class="content-grid">
+            <!-- Gerenciamento de Usuários -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Gerenciamento de Usuários</h2>
+                    <button class="btn btn-primary" id="addUserBtn">+ Adicionar Usuário</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Tipo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Usuários serão inseridos aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Atividades Recentes -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Atividades Recentes</h2>
+                </div>
+                <div id="activityList">
+                    <!-- Atividades serão inseridas aqui -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Adicionar/Editar Usuário -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Adicionar Novo Usuário</h2>
+            </div>
+            <form id="userForm">
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="modalName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="modalEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Usuário</label>
+                    <input type="text" id="modalUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="modalPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Usuário</label>
+                    <select id="modalRole">
+                        <option value="user">Usuário</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="admin-dashboard.js"></script>
+</body>
+
+</html>
