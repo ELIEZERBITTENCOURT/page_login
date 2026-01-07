@@ -22,7 +22,36 @@ function getUsers() {
         localStorage.setItem('users', JSON.stringify(defaultUsers));
         return defaultUsers;
     }
-    return JSON.parse(usersData);
+    
+    // Carregar usuários existentes
+    const loadedUsers = JSON.parse(usersData);
+    
+    // Atualizar usuários existentes que não têm role definido
+    let needsUpdate = false;
+    for (let username in loadedUsers) {
+        if (!loadedUsers[username].role) {
+            // Define role padrão baseado no username
+            if (username === 'admin') {
+                loadedUsers[username].role = 'admin';
+            } else {
+                loadedUsers[username].role = 'user';
+            }
+            needsUpdate = true;
+        }
+        
+        // Adicionar createdAt se não existir
+        if (!loadedUsers[username].createdAt) {
+            loadedUsers[username].createdAt = new Date().toISOString();
+            needsUpdate = true;
+        }
+    }
+    
+    // Salvar se houve atualização
+    if (needsUpdate) {
+        localStorage.setItem('users', JSON.stringify(loadedUsers));
+    }
+    
+    return loadedUsers;
 }
 
 // Função para salvar usuários no localStorage
@@ -136,6 +165,10 @@ registerForm.addEventListener('submit', function (e) {
     const confirmPassword = document.getElementById('registerPasswordConfirm').value;
 
     if (validateRegistration(username, email, password, confirmPassword, name)) {
+        // Recarregar usuários antes de adicionar novo
+        users = getUsers();
+        
+        // IMPORTANTE: usar username como chave, não name
         users[username] = {
             password: password,
             name: name,
@@ -165,6 +198,8 @@ loginForm.addEventListener('submit', function (e) {
     const password = document.getElementById('loginPassword').value;
     const rememberMe = document.getElementById('rememberMe').checked;
 
+    // Recarregar usuários para garantir dados atualizados
+    users = getUsers();
     const user = users[username];
 
     if (!user) {
@@ -192,7 +227,7 @@ loginForm.addEventListener('submit', function (e) {
         localStorage.setItem('rememberedUser', username);
     }
 
-    // Redirecionar baseado no role do usuário
+    // Redirecionar baseado no role do usuário    
     if (user.role === 'admin') {
         window.location.href = './admin-dashboard/admin-dashboard.html';
     } else {
