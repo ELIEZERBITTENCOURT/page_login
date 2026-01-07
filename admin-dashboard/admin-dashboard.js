@@ -17,7 +17,7 @@ window.addEventListener('load', function() {
     
     if (!userData || userData.role !== 'admin') {
         alert('Acesso negado! Você não tem permissão para acessar esta área.');
-        window.location.href = '../dashboard.html';
+        window.location.href = '../user-dashboard/user-dashboard.html';
         return;
     }
     
