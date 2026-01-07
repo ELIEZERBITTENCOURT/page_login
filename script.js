@@ -4,8 +4,20 @@ function getUsers() {
     if (!usersData) {
         // Criar usuários padrão
         const defaultUsers = {
-            'admin': { password: 'admin123', name: 'Administrador', email: 'admin@exemplo.com' },
-            'usuario': { password: '123456', name: 'Usuário Teste', email: 'usuario@exemplo.com' }
+            'admin': { 
+                password: 'admin123', 
+                name: 'Administrador', 
+                email: 'admin@exemplo.com', 
+                role: 'admin',
+                createdAt: new Date().toISOString()
+            },
+            'usuario': { 
+                password: '123456', 
+                name: 'Usuário Teste', 
+                email: 'usuario@exemplo.com', 
+                role: 'user',
+                createdAt: new Date().toISOString()
+            }
         };
         localStorage.setItem('users', JSON.stringify(defaultUsers));
         return defaultUsers;
@@ -127,7 +139,9 @@ registerForm.addEventListener('submit', function (e) {
         users[username] = {
             password: password,
             name: name,
-            email: email
+            email: email,
+            role: 'user',
+            createdAt: new Date().toISOString()
         };
 
         saveUsers(users);
@@ -168,6 +182,7 @@ loginForm.addEventListener('submit', function (e) {
         username: username,
         name: user.name,
         email: user.email,
+        role: user.role || 'user',
         loginTime: new Date().getTime()
     };
 
@@ -177,8 +192,12 @@ loginForm.addEventListener('submit', function (e) {
         localStorage.setItem('rememberedUser', username);
     }
 
-    // Redirecionar para dashboard
-    window.location.href = 'dashboard.html';
+    // Redirecionar baseado no role do usuário
+    if (user.role === 'admin') {
+        window.location.href = './admin-dashboard/admin-dashboard.html';
+    } else {
+        window.location.href = './user-dashboard/user-dashboard.html';
+    }
 });
 
 // Verificar usuário lembrado
